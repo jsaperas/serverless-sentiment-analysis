@@ -2,16 +2,30 @@ var CustomerReviews = window.CustomerReviews || {};
 
 var authToken;
 
-CustomerReviews.authToken.then(function setAuthToken(token) {
-    if (token) {
-        authToken = token;
-    } else {
-        window.location.href = _config.urls.signin;
-    }
-}).catch(function handleTokenError(error) {
-    alert(error);
+var hash = window.location.hash;
+var token = hash.split('id_token=')[1];
+
+if (token) {
+    authToken = token.split('&')[0];
+    CustomerReviews.authToken = authToken
+    setAuthToken(authToken)
+} else {
+    console.log('redirect')
     window.location.href = _config.urls.signin;
-});
+}
+
+//CustomerReviews.authToken = authToken;
+
+//CustomerReviews.authToken.then(function setAuthToken(token) {
+//    if (token) {
+//        authToken = token;
+//    } else {
+//        window.location.href = _config.urls.signin;
+//    }
+//}).catch(function handleTokenError(error) {
+//    alert(error);
+//    window.location.href = _config.urls.signin;
+//});
 
 function submitReview() {
     event.preventDefault();
